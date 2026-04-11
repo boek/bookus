@@ -2,11 +2,9 @@ import type { Note } from "~/lib/content";
 
 export default function FeedNote({ note }: { note: Note }) {
   return (
-    <div className="py-8">
-      <p className="mb-2 text-sm text-gray-400">
-        {note.date.toLocaleDateString()}
-      </p>
-      <p className="text-gray-700">{note.content}</p>
+    <div className="mx-auto flex max-w-2xl items-start gap-4 px-4 py-8">
+      <p className="flex-1 text-white">{note.content}</p>
+      <p className="shrink-0 text-sm text-blue-200">{note.date.toLocaleDateString()}</p>
     </div>
   );
 }

@@ -19,36 +19,46 @@ export interface Post extends Content {
   description: string;
 }
 
-export const notes: Note[] = readdirSync(contentDir + "/notes")
-  .filter((f) => f.endsWith(".mdx"))
-  .map((f) => {
-    const content = readFileSync(
-      path.join(contentDir, "notes", f),
-      "utf-8",
-    ).trim();
-    const date = new Date(
-      +f.slice(0, 4),
-      +f.slice(4, 6) - 1,
-      +f.slice(6, 8),
-      +f.slice(8, 10),
-      +f.slice(10, 12),
-    );
-    const slug = f.replace(/\.mdx?$/, "");
-    return { type: "note" as const, slug, date, content };
-  });
-
-export const posts: Post[] = await Promise.all(
-  readdirSync(contentDir + "/posts")
+export async function getNotes(): Promise<Note[]> {
+  return readdirSync(contentDir + "/notes")
     .filter((f) => f.endsWith(".mdx"))
-    .map(async (f) => {
+    .map((f) => {
+      const content = readFileSync(
+        path.join(contentDir, "notes", f),
+        "utf-8",
+      ).trim();
+      const date = new Date(
+        +f.slice(0, 4),
+        +f.slice(4, 6) - 1,
+        +f.slice(6, 8),
+        +f.slice(8, 10),
+        +f.slice(10, 12),
+      );
       const slug = f.replace(/\.mdx?$/, "");
-      const { frontmatter } = (await import(`~/content/posts/${f}`)) as {
-        frontmatter: { title: string; description: string; date: string };
-      };
-      return { type: "post" as const, slug, ...frontmatter, date: new Date(frontmatter.date) };
-    }),
-);
+      return { type: "note" as const, slug, date, content };
+    });
+}
 
-export const all: (Note | Post)[] = [...notes, ...posts].sort(
-  (a, b) => b.date.getTime() - a.date.getTime(),
-);
+export async function getPosts(): Promise<Post[]> {
+  return await Promise.all(
+    readdirSync(contentDir + "/posts")
+      .filter((f) => f.endsWith(".mdx"))
+      .map(async (f) => {
+        const slug = f.replace(/\.mdx?$/, "");
+        const { frontmatter } = (await import(`~/content/posts/${f}`)) as {
+          frontmatter: { title: string; description: string; date: string };
+        };
+        return {
+          type: "post" as const,
+          slug,
+          ...frontmatter,
+          date: new Date(frontmatter.date),
+        };
+      }),
+  );
+}
+
+export async function getAll(): Promise<(Note | Post)[]> {
+  const [notes, posts] = await Promise.all([getNotes(), getPosts()]);
+  return [...notes, ...posts].sort((a, b) => b.date.getTime() - a.date.getTime());
+}

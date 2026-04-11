@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
+@utility shadow-inner-bottom {
+  box-shadow: inset 0 -6px 0px -2px rgba(0, 0, 0, 0.1);
+}
+
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-brand-navy: #2c3e50;
+  --color-brand-green: #3d9970;
+  --color-brand-amber: #f0ad00;
+  --color-brand-red: #c0392b;
+  --color-brand-blue: #2980b9;
+  --color-brand-muted: #f4f4f4;
 }
