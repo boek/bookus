@@ -15,9 +15,9 @@ export const posts: Post[] = await Promise.all(
     .filter((f) => f.endsWith(".mdx"))
     .map(async (f) => {
       const slug = f.replace(/\.mdx?$/, "");
-      const { frontmatter } = (await import(`@content/posts/${f}`)) as {
+      const { frontmatter } = (await import(`~/content/posts/${f}`)) as {
         frontmatter: { title: string; description: string; date: string };
       };
       return { slug, ...frontmatter };
-    })
+    }),
 );

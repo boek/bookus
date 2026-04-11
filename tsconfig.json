@@ -28,7 +28,6 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@content/*": ["./src/content/*"],
     },
   },
   "include": [
