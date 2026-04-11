@@ -63,7 +63,6 @@ export async function getPosts(): Promise<Post[]> {
         const body = raw.replace(/^---[\s\S]*?---\n/, "").trim();
         const excerpt = body.slice(0, sumamryLength);
         const hasMore = body.length > sumamryLength;
-        console.log(excerpt);
         return {
           type: "post" as const,
           slug,
@@ -77,7 +76,11 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getAll(): Promise<(Note | TIL | Post)[]> {
-  const [notes, tils, posts] = await Promise.all([getNotes(), getTILs(), getPosts()]);
+  const [notes, tils, posts] = await Promise.all([
+    getNotes(),
+    getTILs(),
+    getPosts(),
+  ]);
   return [...notes, ...tils, ...posts].sort(
     (a, b) => b.date.getTime() - a.date.getTime(),
   );

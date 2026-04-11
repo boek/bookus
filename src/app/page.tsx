@@ -34,6 +34,7 @@ export default async function HomePage() {
   return (
     <>
       <main>
+        <Header />
         <ul>
           {groups.map((group, i) => (
             <li

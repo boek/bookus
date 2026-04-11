@@ -7,7 +7,7 @@ export default function FeedPost({ post }: { post: Post }) {
     <div className="mx-auto flex max-w-2xl items-start gap-4 px-4 py-8">
       <div className="flex-1">
         <Link href={`/posts/${post.slug}`} className="group">
-          <h2 className="mb-2 text-xl font-semibold text-brand-post-text group-hover:text-brand-post-accent">
+          <h2 className="mb-2 text-5xl font-bold tracking-tight text-brand-post-text group-hover:text-brand-post-accent">
             {post.title}
           </h2>
         </Link>
