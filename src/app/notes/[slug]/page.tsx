@@ -1,4 +1,4 @@
-import { notes } from "~/lib/content";
+import { getNotes } from "~/lib/content";
 import FeedNote from "~/components/FeedNote";
 
 export default async function Page({
@@ -7,6 +7,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  let notes = await getNotes();
   const note = notes.find((n) => n.slug === slug);
 
   if (!note) return <p>Note not found.</p>;
@@ -14,7 +15,8 @@ export default async function Page({
   return <FeedNote note={note} />;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  let notes = await getNotes();
   return notes.map((n) => ({ slug: n.slug }));
 }
 

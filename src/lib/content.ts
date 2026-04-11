@@ -10,23 +10,20 @@ export interface Content {
 
 export interface Note extends Content {
   type: "note";
-  content: string;
 }
 
 export interface Post extends Content {
   type: "post";
   title: string;
   description: string;
+  excerpt: string;
+  hasMore: boolean;
 }
 
 export async function getNotes(): Promise<Note[]> {
   return readdirSync(contentDir + "/notes")
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => {
-      const content = readFileSync(
-        path.join(contentDir, "notes", f),
-        "utf-8",
-      ).trim();
       const date = new Date(
         +f.slice(0, 4),
         +f.slice(4, 6) - 1,
@@ -35,9 +32,11 @@ export async function getNotes(): Promise<Note[]> {
         +f.slice(10, 12),
       );
       const slug = f.replace(/\.mdx?$/, "");
-      return { type: "note" as const, slug, date, content };
+      return { type: "note" as const, slug, date };
     });
 }
+
+const sumamryLength = 350;
 
 export async function getPosts(): Promise<Post[]> {
   return await Promise.all(
@@ -48,11 +47,18 @@ export async function getPosts(): Promise<Post[]> {
         const { frontmatter } = (await import(`~/content/posts/${f}`)) as {
           frontmatter: { title: string; description: string; date: string };
         };
+        const raw = readFileSync(path.join(contentDir, "posts", f), "utf-8");
+        const body = raw.replace(/^---[\s\S]*?---\n/, "").trim();
+        const excerpt = body.slice(0, sumamryLength);
+        const hasMore = body.length > sumamryLength;
+        console.log(excerpt);
         return {
           type: "post" as const,
           slug,
           ...frontmatter,
           date: new Date(frontmatter.date),
+          excerpt,
+          hasMore,
         };
       }),
   );
@@ -60,5 +66,7 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getAll(): Promise<(Note | Post)[]> {
   const [notes, posts] = await Promise.all([getNotes(), getPosts()]);
-  return [...notes, ...posts].sort((a, b) => b.date.getTime() - a.date.getTime());
+  return [...notes, ...posts].sort(
+    (a, b) => b.date.getTime() - a.date.getTime(),
+  );
 }

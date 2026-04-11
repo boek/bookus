@@ -1,5 +1,5 @@
 import type { Element, MDXProps } from "mdx/types";
-import { posts } from "~/lib/content";
+import { getPosts } from "~/lib/content";
 
 export default async function Page({
   params,
@@ -14,7 +14,8 @@ export default async function Page({
   return <Post />;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  let posts = await getPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
