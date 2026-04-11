@@ -1,6 +1,7 @@
 import { getNotes } from "~/lib/content";
 import FeedNote from "~/components/FeedNote";
 import BackLink from "~/components/BackLink";
+import Footer from "~/components/Footer";
 
 export default async function Page({
   params,
@@ -14,9 +15,10 @@ export default async function Page({
   if (!note) return <p>Note not found.</p>;
 
   return (
-    <div className="min-h-screen bg-brand-note-bg">
+    <div className="bg-brand-note-bg min-h-screen">
       <BackLink href="/" className="text-brand-note-accent" />
       <FeedNote note={note} />
+      <Footer />
     </div>
   );
 }

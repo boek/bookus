@@ -1,6 +1,7 @@
 import { getTILs } from "~/lib/content";
 import FeedTIL from "~/components/FeedTIL";
 import BackLink from "~/components/BackLink";
+import Footer from "~/components/Footer";
 
 export default async function Page({
   params,
@@ -14,9 +15,10 @@ export default async function Page({
   if (!til) return <p>TIL not found.</p>;
 
   return (
-    <div className="min-h-screen bg-brand-til-bg">
+    <div className="bg-brand-til-bg min-h-screen">
       <BackLink href="/" className="text-brand-til-accent" />
       <FeedTIL til={til} />
+      <Footer />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import FeedNote from "~/components/FeedNote";
 import FeedTIL from "~/components/FeedTIL";
 import FeedPost from "~/components/FeedPost";
 import Header from "~/components/Header";
+import Footer from "~/components/Footer";
 
 type ContentItem = Note | TIL | Post;
 type Group = { type: ContentItem["type"]; items: ContentItem[] };
@@ -35,7 +36,10 @@ export default async function HomePage() {
       <main>
         <ul>
           {groups.map((group, i) => (
-            <li key={i} className={`shadow-inner-bottom ${bgColor[group.type]}`}>
+            <li
+              key={i}
+              className={`shadow-inner-bottom ${bgColor[group.type]}`}
+            >
               <div className="divide-y divide-white/5">
                 {group.items.map((item) =>
                   item.type === "post" ? (
@@ -51,10 +55,7 @@ export default async function HomePage() {
           ))}
         </ul>
       </main>
-      <footer className="px-4 py-8 text-center text-sm text-white/30">
-        <p>Probably riding my 🚲 in PDX</p>
-        <p className="mt-1">&copy; {new Date().getFullYear()} Jeff Boek</p>
-      </footer>
+      <Footer />
     </>
   );
 }
