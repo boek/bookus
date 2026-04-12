@@ -17,8 +17,8 @@ const phrases = [
       currently arguing with the <LspError>type system</LspError>
     </>
   ),
-  () => <>refreshing the deploy logs 👀</>,
-  () => <>definitely not debugging Tailwind 😤</>,
+  () => <>probably fixing some typos ⌨️</>,
+  () => <>is this web development 🦋</>,
 ];
 
 export default function Footer() {
