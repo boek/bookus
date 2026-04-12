@@ -6,6 +6,11 @@ import { Inter } from "next/font/google";
 export const metadata: Metadata = {
   title: "ITS BOEK",
   description: "MY WEBSITE",
+  alternates: {
+    types: {
+      "application/rss+xml": "https://boek.us/feed.xml",
+    },
+  },
 };
 
 const inter = Inter({
